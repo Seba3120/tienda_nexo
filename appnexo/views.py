@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def lista_productos(request):
     productos = Producto.objects.all()
@@ -83,3 +84,16 @@ def registrarse(request):
 def cerrar_sesion(request):
     logout(request)
     return redirect('categorias')
+
+@login_required
+def perfil(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        email = request.POST['email']
+        telefono = request.POST.get('telefono', '')
+        request.user.first_name = nombre
+        request.user.email = email
+        request.user.save()
+        messages.success(request, 'Perfil actualizado correctamente')
+        return redirect('perfil')
+    return render(request, 'appnexo/perfil.html')

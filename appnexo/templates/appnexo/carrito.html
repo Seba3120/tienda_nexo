@@ -20,7 +20,7 @@
                 <a href="#" class="nav-link">Contacto</a>
                 <input type="text" class="form-control" placeholder="Buscar productos...">
                 {% if user.is_authenticated %}
-                <span class="nav-link">Hola, {{ user.first_name }}</span>
+                <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
                 <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
                 {% else %}
                 <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
