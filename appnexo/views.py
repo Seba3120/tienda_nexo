@@ -2,6 +2,9 @@ from django.shortcuts import render
 from .models import Producto, Categoria
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def lista_productos(request):
     productos = Producto.objects.all()
@@ -51,3 +54,32 @@ def eliminar_carrito(request, pk):
         del carrito[str(pk)]
         request.session['carrito'] = carrito
     return redirect('ver_carrito')
+
+def iniciar_sesion(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        usuario = authenticate(request, username=username, password=password)
+        if usuario is not None:
+            login(request, usuario)
+            return redirect('categorias')
+        else:
+            messages.error(request, 'Usuario o contraseña incorrectos')
+    return render(request, 'appnexo/login.html')
+
+def registrarse(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        email = request.POST['email']
+        password = request.POST['password']
+        if User.objects.filter(username=email).exists():
+            messages.error(request, 'Ya existe una cuenta con ese correo')
+        else:
+            usuario = User.objects.create_user(username=email, email=email, password=password, first_name=nombre)
+            login(request, usuario)
+            return redirect('categorias')
+    return render(request, 'appnexo/login.html')
+
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('categorias')
