@@ -78,7 +78,7 @@
                                     <p class="card-title mb-1 fw-bold small">{{ producto.nombre }}</p>
                                     <p class="text-primary fw-bold">${{ producto.precio }}</p>
                                     <div class="d-flex gap-1">
-                                        <button class="btn btn-outline-secondary btn-sm">Ver</button>
+                                        <a href="{% url 'detalle_producto' producto.pk %}" class="btn btn-outline-secondary btn-sm">Ver</a>
                                         <button class="btn btn-primary btn-sm">Agregar</button>
                                     </div>
                                 </div>

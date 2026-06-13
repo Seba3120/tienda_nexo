@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ producto.nombre }} - Tienda Nexo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">🔒 Tienda Nexo</a>
+            <div class="d-flex gap-3 align-items-center">
+                <a href="#" class="nav-link">Inicio</a>
+                <a href="{% url 'categorias' %}" class="nav-link">Categorías</a>
+                <a href="#" class="nav-link">Promociones</a>
+                <a href="#" class="nav-link">Contacto</a>
+                <input type="text" class="form-control" placeholder="Buscar productos...">
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'categorias' %}">Categorías</a></li>
+                <li class="breadcrumb-item active">{{ producto.nombre }}</li>
+            </ol>
+        </nav>
+
+        <!-- Detalle del producto -->
+        <div class="row mb-5">
+            <!-- Imagen -->
+            <div class="col-md-6">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow" style="width:100%; object-fit:cover;">
+                {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="col-md-6">
+                <h2 class="fw-bold">{{ producto.nombre }}</h2>
+                <p class="text-muted">{{ producto.descripcion|truncatewords:20 }}</p>
+                <h3 class="text-primary fw-bold">${{ producto.precio }}</h3>
+
+                <div class="mb-3">
+                    <strong>Color:</strong>
+                    <span class="badge bg-secondary ms-2">{{ producto.color }}</span>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Talla:</strong>
+                    <span class="badge bg-secondary ms-2">{{ producto.talla }}</span>
+                </div>
+
+                <div class="mb-3">
+                    <strong>Marca:</strong> {{ producto.marca }}
+                </div>
+
+                <div class="mb-3">
+                    <label class="fw-bold">Cantidad:</label>
+                    <input type="number" class="form-control w-25" value="1" min="1">
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary">Agregar al Carrito</button>
+                    <button class="btn btn-outline-secondary">Lista de Deseos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Descripcion completa -->
+        <div class="card p-4 mb-4">
+            <h5 class="fw-bold">Descripción del Producto</h5>
+            <p>{{ producto.descripcion }}</p>
+        </div>
+
+        <!-- Productos relacionados -->
+        <h5 class="fw-bold mb-3">Productos Relacionados</h5>
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            {% for relacionado in productos_relacionados %}
+                <div class="col">
+                    <div class="card h-100">
+                        {% if relacionado.imagen %}
+                            <img src="{{ relacionado.imagen.url }}" class="card-img-top" style="height:180px; object-fit:cover;">
+                        {% endif %}
+                        <div class="card-body p-2">
+                            <p class="fw-bold small">{{ relacionado.nombre }}</p>
+                            <p class="text-primary">${{ relacionado.precio }}</p>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'detalle_producto' relacionado.pk %}" class="btn btn-outline-secondary btn-sm">Ver</a>
+                                <button class="btn btn-primary btn-sm">Agregar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
