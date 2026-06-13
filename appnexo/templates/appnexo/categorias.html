@@ -79,7 +79,7 @@
                                     <p class="text-primary fw-bold">${{ producto.precio }}</p>
                                     <div class="d-flex gap-1">
                                         <a href="{% url 'detalle_producto' producto.pk %}" class="btn btn-outline-secondary btn-sm">Ver</a>
-                                        <button class="btn btn-primary btn-sm">Agregar</button>
+                                        <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-primary btn-sm">Agregar</a>
                                     </div>
                                 </div>
                             </div>
