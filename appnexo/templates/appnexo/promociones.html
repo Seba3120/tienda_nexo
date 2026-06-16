@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio - Tienda Nexo</title>
+    <title>Promociones - Tienda Nexo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -12,9 +12,9 @@
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'inicio' %}">🔒 Tienda Nexo</a>
             <div class="d-flex gap-3 align-items-center">
-                <a href="{% url 'inicio' %}" class="nav-link fw-bold">Inicio</a>
+                <a href="{% url 'inicio' %}" class="nav-link">Inicio</a>
                 <a href="{% url 'categorias' %}" class="nav-link">Categorías</a>
-                <a href="{% url 'promociones' %}" class="nav-link">Promociones</a>
+                <a href="{% url 'promociones' %}" class="nav-link fw-bold">Promociones</a>
                 <a href="{% url 'contacto' %}" class="nav-link">Contacto</a>
                 <input type="text" class="form-control" placeholder="Buscar productos...">
                 <button class="btn btn-primary">Buscar</button>
@@ -28,42 +28,37 @@
         </div>
     </nav>
 
-    <!-- Texto en Principal en Grande -->
-    <div class="bg-primary text-white text-center py-5 mb-4">
-        <h1 class="fw-bold">Bienvenido a Tienda Nexo</h1>
-        <p class="lead">Encuentra la mejor ropa al mejor precio</p>
-        <a href="{% url 'categorias' %}" class="btn btn-light btn-lg">Ver Productos</a>
-    </div>
+    <div class="container mt-4">
 
-    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item active">Promociones</li>
+            </ol>
+        </nav>
 
-        <!-- Categorias -->
-        <h4 class="fw-bold mb-3">Categorías</h4>
-        <div class="row g-3 mb-5">
-            {% for categoria in categorias %}
-                <div class="col-md-3">
-                    <div class="card text-center p-3">
-                        <h6 class="fw-bold">{{ categoria.nombre }}</h6>
-                        <a href="{% url 'categorias' %}" class="btn btn-outline-primary btn-sm mt-2">Ver más</a>
-                    </div>
-                </div>
-            {% empty %}
-                <p class="text-muted">No hay categorías registradas.</p>
-            {% endfor %}
+        <h2 class="fw-bold mb-4">Promociones</h2>
+
+        <!-- Banner promocion -->
+        <div class="card bg-warning text-dark p-4 text-center mb-4">
+            <h4 class="fw-bold">¡Ofertas especiales esta semana!</h4>
+            <p>Descuentos en toda la tienda. Aprovecha antes que se acaben.</p>
         </div>
 
-        <!-- Productos destacados -->
-        <h4 class="fw-bold mb-3">Productos Destacados</h4>
-        <div class="row row-cols-2 row-cols-md-4 g-3 mb-5">
-            {% for producto in productos_destacados %}
+        <!-- Productos en promocion -->
+        <h5 class="fw-bold mb-3">Productos en Oferta</h5>
+        <div class="row row-cols-2 row-cols-md-4 g-3">
+            {% for producto in productos %}
                 <div class="col">
                     <div class="card h-100">
                         {% if producto.imagen %}
                             <img src="{{ producto.imagen.url }}" class="card-img-top" style="height:180px; object-fit:cover;">
                         {% endif %}
                         <div class="card-body p-2">
+                            <span class="badge bg-danger mb-1">Oferta</span>
                             <p class="fw-bold small">{{ producto.nombre }}</p>
-                            <p class="text-primary">${{ producto.precio }}</p>
+                            <p class="text-primary fw-bold">${{ producto.precio }}</p>
                             <div class="d-flex gap-1">
                                 <a href="{% url 'detalle_producto' producto.pk %}" class="btn btn-outline-secondary btn-sm">Ver</a>
                                 <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-primary btn-sm">Agregar</a>
@@ -72,44 +67,36 @@
                     </div>
                 </div>
             {% empty %}
-                <p class="text-muted">No hay productos registrados.</p>
+                <p class="text-muted">No hay promociones disponibles por el momento.</p>
             {% endfor %}
-        </div>
-
-        <!-- Promociones -->
-        <h4 class="fw-bold mb-3">Promociones</h4>
-        <div class="card bg-warning text-dark p-4 text-center mb-5">
-            <h5 class="fw-bold">¡Ofertas especiales esta semana!</h5>
-            <p>Descuentos en toda la tienda. No te lo pierdas.</p>
-            <a href="{% url 'promociones' %}" class="btn btn-dark">Ver Promociones</a>
         </div>
 
     </div>
 
     <!-- Footer -->
-    <footer class="bg-secondary text-white py-4 mt-4">
+    <footer class="bg-secondary text-white py-4 mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
                     <h6 class="fw-bold">Tienda Nexo</h6>
-                    <p class="small text-muted">Tu tienda de ropa online.</p>
+                    <p class="small text-white">Tu tienda de ropa online.</p>
                 </div>
                 <div class="col-md-4">
                     <h6 class="fw-bold">Enlaces</h6>
                     <ul class="list-unstyled small">
-                        <li><a href="{% url 'inicio' %}" class="text-muted">Inicio</a></li>
-                        <li><a href="{% url 'categorias' %}" class="text-muted">Categorías</a></li>
-                        <li><a href="{% url 'contacto' %}" class="text-muted">Contacto</a></li>
+                        <li><a href="{% url 'inicio' %}" class="text-white">Inicio</a></li>
+                        <li><a href="{% url 'categorias' %}" class="text-white">Categorías</a></li>
+                        <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
                     <h6 class="fw-bold">Contacto</h6>
-                    <p class="small text-muted">contacto@tiendanexo.cl</p>
-                    <p class="small text-muted">+56 9 XXXXXXXX</p>
+                    <p class="small text-white">contacto@tiendanexo.cl</p>
+                    <p class="small text-white">+56 9 XXXXXXXX</p>
                 </div>
             </div>
-            <hr class="border-secondary">
-            <p class="text-center text-muted small">© 2026 Tienda Nexo. Todos los derechos reservados.</p>
+            <hr class="border-light">
+            <p class="text-center text-white small">© 2026 Tienda Nexo. Todos los derechos reservados.</p>
         </div>
     </footer>
 

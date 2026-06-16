@@ -16,7 +16,7 @@
             <div class="d-flex gap-3 align-items-center">
                 <a href="{% url 'inicio' %}" class="nav-link">Inicio</a>
                 <a href="#" class="nav-link fw-bold">Categorías</a>
-                <a href="#" class="nav-link">Promociones</a>
+                <a href="{% url 'promociones' %}" class="nav-link">Promociones</a>
                 <a href="{% url 'contacto' %}" class="nav-link">Contacto</a>
                 <input type="text" class="form-control" placeholder="Buscar productos...">
                 {% if user.is_authenticated %}

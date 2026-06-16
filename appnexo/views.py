@@ -166,3 +166,9 @@ def inicio(request):
         'productos_destacados': productos_destacados,
         'categorias': categorias,
     })
+
+def promociones(request):
+    productos = Producto.objects.all()
+    return render(request, 'appnexo/promociones.html', {
+        'productos': productos,
+    })
