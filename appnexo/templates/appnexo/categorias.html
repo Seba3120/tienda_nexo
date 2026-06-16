@@ -89,10 +89,13 @@
             <div class="col-md-9">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5>Todas ({{ productos.count }} productos)</h5>
-                    <select class="form-select w-auto">
-                        <option>Ordenar por: Relevancia</option>
-                        <option>Menor precio</option>
-                        <option>Mayor precio</option>
+                    <select class="form-select w-auto" onchange="window.location.href='?orden=' + this.value">
+                        <option value="">Ordenar por: Relevancia</option>
+                        <option value="precio_asc" {% if request.GET.orden == "precio_asc" %}selected{% endif %}>Menor
+                            precio</option>
+                        <option value="precio_desc" {% if request.GET.orden == "precio_desc" %}selected{% endif %}>Mayor
+                            precio</option>
+                        <option value="nombre" {% if request.GET.orden == "nombre" %}selected{% endif %}>Nombre</option>
                     </select>
                 </div>
 
