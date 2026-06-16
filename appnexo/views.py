@@ -21,6 +21,7 @@ def lista_productos(request):
     marca = request.GET.get("marca")
     precio_min = request.GET.get("precio_min")
     precio_max = request.GET.get("precio_max")
+    busqueda = request.GET.get('busqueda')
 
     if categoria_id:
         productos = productos.filter(categoria__id=categoria_id)
@@ -40,6 +41,8 @@ def lista_productos(request):
         productos = productos.filter(precio__gte=precio_min)
     if precio_max:
         productos = productos.filter(precio__lte=precio_max)
+    if busqueda:
+        productos = productos.filter(nombre__icontains=busqueda)
 
     # Obtener valores unicos para los filtros
     colores = Producto.objects.values_list("color", flat=True).distinct()
@@ -55,6 +58,7 @@ def lista_productos(request):
             "colores": colores,
             "marcas": marcas,
             "tallas": tallas,
+            'busqueda': busqueda,
         },
     )
 

@@ -1,11 +1,14 @@
 Ahora crea el archivo pago.html dentro de appnexo/templates/appnexo/ y pega esto:
-html<!DOCTYPE html>
+html
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Pago - Tienda Nexo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <!-- Navbar -->
@@ -17,13 +20,16 @@ html<!DOCTYPE html>
                 <a href="{% url 'categorias' %}" class="nav-link">Categorías</a>
                 <a href="{% url 'promociones' %}" class="nav-link">Promociones</a>
                 <a href="{% url 'contacto' %}" class="nav-link">Contacto</a>
-                <input type="text" class="form-control" placeholder="Buscar productos...">
-                <button class="btn btn-primary">Buscar</button>
+                <form method="GET" action="{% url 'categorias' %}" class="d-flex gap-2">
+                    <input type="text" name="busqueda" class="form-control" placeholder="Buscar productos..."
+                        value="{{ request.GET.busqueda }}">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </form>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
+                <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
                 {% endif %}
             </div>
         </div>
@@ -53,7 +59,8 @@ html<!DOCTYPE html>
                     <div class="card p-4 mb-3">
                         <h5 class="fw-bold mb-3">Información de Contacto</h5>
                         <div class="mb-3">
-                            <input type="email" name="email" class="form-control" placeholder="tu.email@ejemplo.com" value="{{ user.email }}">
+                            <input type="email" name="email" class="form-control" placeholder="tu.email@ejemplo.com"
+                                value="{{ user.email }}">
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox">
@@ -66,14 +73,16 @@ html<!DOCTYPE html>
                         <h5 class="fw-bold mb-3">Dirección de Envío</h5>
                         <div class="row mb-3">
                             <div class="col">
-                                <input type="text" name="nombre" class="form-control" placeholder="Nombre" value="{{ user.first_name }}">
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombre"
+                                    value="{{ user.first_name }}">
                             </div>
                             <div class="col">
                                 <input type="text" name="apellido" class="form-control" placeholder="Apellido">
                             </div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" name="calle" class="form-control" placeholder="Calle, número, piso, apto">
+                            <input type="text" name="calle" class="form-control"
+                                placeholder="Calle, número, piso, apto">
                         </div>
                         <div class="mb-3">
                             <input type="text" name="ciudad" class="form-control" placeholder="Ciudad">
@@ -83,7 +92,8 @@ html<!DOCTYPE html>
                                 <input type="text" name="pais" class="form-control" placeholder="País">
                             </div>
                             <div class="col">
-                                <input type="text" name="codigo_postal" class="form-control" placeholder="Código Postal">
+                                <input type="text" name="codigo_postal" class="form-control"
+                                    placeholder="Código Postal">
                             </div>
                         </div>
                         <div class="form-check">
@@ -113,11 +123,13 @@ html<!DOCTYPE html>
                             <label class="form-check-label">Tarjeta de Crédito/Débito</label>
                         </div>
                         <div class="mb-3">
-                            <input type="text" name="numero_tarjeta" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
+                            <input type="text" name="numero_tarjeta" class="form-control"
+                                placeholder="XXXX XXXX XXXX XXXX">
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <input type="text" name="vencimiento" class="form-control" placeholder="Fecha de Vencimiento (MM/AA)">
+                                <input type="text" name="vencimiento" class="form-control"
+                                    placeholder="Fecha de Vencimiento (MM/AA)">
                             </div>
                             <div class="col">
                                 <input type="text" name="cvv" class="form-control" placeholder="CVV">
@@ -145,10 +157,10 @@ html<!DOCTYPE html>
                 <div class="card p-4 mb-3">
                     <h5 class="fw-bold mb-3">Resumen del Pedido</h5>
                     {% for item in productos_carrito %}
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="small">{{ item.producto.nombre }} x{{ item.cantidad }}</span>
-                            <span class="small">${{ item.subtotal }}</span>
-                        </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="small">{{ item.producto.nombre }} x{{ item.cantidad }}</span>
+                        <span class="small">${{ item.subtotal }}</span>
+                    </div>
                     {% endfor %}
                     <hr>
                     <div class="d-flex justify-content-between">
@@ -180,4 +192,5 @@ html<!DOCTYPE html>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
