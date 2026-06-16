@@ -158,3 +158,11 @@ def panel(request):
         'ultimos_pedidos': ultimos_pedidos,
         'productos': productos,
     })
+
+def inicio(request):
+    productos_destacados = Producto.objects.all()[:8]
+    categorias = Categoria.objects.all()
+    return render(request, 'appnexo/inicio.html', {
+        'productos_destacados': productos_destacados,
+        'categorias': categorias,
+    })
