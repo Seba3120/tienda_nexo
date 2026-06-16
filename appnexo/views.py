@@ -97,3 +97,13 @@ def perfil(request):
         messages.success(request, 'Perfil actualizado correctamente')
         return redirect('perfil')
     return render(request, 'appnexo/perfil.html')
+
+def contacto(request):
+    if request.method == 'POST':
+        nombre = request.POST['nombre']
+        apellido = request.POST['apellido']
+        email = request.POST['email']
+        mensaje = request.POST['mensaje']
+        messages.success(request, 'Mensaje enviado correctamente, te contactaremos pronto.')
+        return redirect('contacto')
+    return render(request, 'appnexo/contacto.html')

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacto - Tienda Nexo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">🔒 Tienda Nexo</a>
+            <div class="d-flex gap-3 align-items-center">
+                <a href="#" class="nav-link">Inicio</a>
+                <a href="{% url 'categorias' %}" class="nav-link">Categorías</a>
+                <a href="#" class="nav-link">Promociones</a>
+                <a href="{% url 'contacto' %}" class="nav-link fw-bold">Contacto</a>
+                <input type="text" class="form-control" placeholder="Buscar productos...">
+                <button class="btn btn-primary">Buscar</button>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                <li class="breadcrumb-item active">Contacto</li>
+            </ol>
+        </nav>
+
+        <h2 class="fw-bold mb-4">Página de Contacto</h2>
+
+        <div class="row">
+
+            <!-- Formulario -->
+            <div class="col-md-8">
+                <div class="card p-4 mb-4">
+                    <h5 class="fw-bold mb-4">Envíanos un Mensaje</h5>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" name="nombre" class="form-control" required>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Apellido</label>
+                                <input type="text" name="apellido" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Teléfono (opcional)</label>
+                            <input type="text" name="telefono" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Motivo de Contacto</label>
+                            <select name="motivo" class="form-select">
+                                <option>Seleccionar motivo...</option>
+                                <option>Consulta sobre producto</option>
+                                <option>Problema con pedido</option>
+                                <option>Devolución</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mensaje</label>
+                            <textarea name="mensaje" class="form-control" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" required>
+                                <label class="form-check-label small">Acepto la <a href="#">política de privacidad</a></label>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+                            <button type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Preguntas frecuentes -->
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-3">Preguntas Frecuentes</h5>
+                    <div class="accordion" id="faq">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    ¿Cómo puedo rastrear mi pedido?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faq">
+                                <div class="accordion-body">Puedes rastrear tu pedido desde la sección "Mis Pedidos" en tu perfil.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    ¿Cuánto demora el envío?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faq">
+                                <div class="accordion-body">El envío estándar demora entre 3 a 5 días hábiles. El envío express entre 1 a 2 días hábiles.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    ¿Cómo puedo hacer una devolución?
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faq">
+                                <div class="accordion-body">Puedes solicitar una devolución dentro de los primeros 30 días desde la compra contactándonos por este formulario.</div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    ¿Qué métodos de pago aceptan?
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faq">
+                                <div class="accordion-body">Aceptamos tarjetas de crédito y débito, PayPal y transferencia bancaria.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info de contacto -->
+            <div class="col-md-4">
+                <div class="card p-4 mb-4">
+                    <h5 class="fw-bold mb-3">Información de Contacto</h5>
+                    <p>📍 Dirección...</p>
+                    <p>📞 +56 2 XXXXXXX</p>
+                    <p>📱 +56 9 XXXXXXX</p>
+                    <p>✉️ contacto@tiendanexo.cl</p>
+                    <p>🕐 Lun-Vie: 9:00 - 18:00<br>Sáb: 10:00 - 14:00</p>
+                </div>
+
+                <div class="card p-4 mb-4">
+                    <h5 class="fw-bold mb-3">Ubicación</h5>
+                    <div class="bg-secondary rounded" style="height:150px; display:flex; align-items:center; justify-content:center;">
+                        <span class="text-white">Mapa aquí</span>
+                    </div>
+                </div>
+
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-3">Síguenos</h5>
+                    <div class="d-flex gap-3 fs-3">
+                        <a href="#" class="text-dark">📘</a>
+                        <a href="#" class="text-dark">🐦</a>
+                        <a href="#" class="text-dark">📸</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
