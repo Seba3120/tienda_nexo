@@ -21,7 +21,7 @@ def lista_productos(request):
     marca = request.GET.get("marca")
     precio_min = request.GET.get("precio_min")
     precio_max = request.GET.get("precio_max")
-    busqueda = request.GET.get('busqueda')
+    busqueda = request.GET.get("busqueda")
 
     if categoria_id:
         productos = productos.filter(categoria__id=categoria_id)
@@ -58,7 +58,7 @@ def lista_productos(request):
             "colores": colores,
             "marcas": marcas,
             "tallas": tallas,
-            'busqueda': busqueda,
+            "busqueda": busqueda,
         },
     )
 
@@ -199,12 +199,10 @@ def pago(request):
 
     if request.method == "POST":
         pedido = Pedido.objects.create(
-            usuario=request.user,
-            total=total,
-            estado='pendiente'
+            usuario=request.user, total=total, estado="pendiente"
         )
-        request.session['carrito'] = {}
-        return redirect('confirmacion')
+        request.session["carrito"] = {}
+        return redirect("confirmacion")
 
     return render(
         request,
@@ -217,12 +215,16 @@ def pago(request):
 
 
 def confirmacion(request):
+    ultimo_pedido = (
+        Pedido.objects.filter(usuario=request.user).order_by("-fecha").first()
+    )
     productos = Producto.objects.all()[:4]
     return render(
         request,
         "appnexo/confirmacion.html",
         {
             "productos": productos,
+            "pedido": ultimo_pedido,
         },
     )
 
@@ -273,28 +275,59 @@ def promociones(request):
         },
     )
 
+
 @login_required
 def lista_deseos(request):
     deseos = ListaDeseos.objects.filter(usuario=request.user)
-    return render(request, 'appnexo/lista_deseos.html', {
-        'deseos': deseos,
-    })
+    return render(
+        request,
+        "appnexo/lista_deseos.html",
+        {
+            "deseos": deseos,
+        },
+    )
+
 
 @login_required
 def agregar_deseos(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     ListaDeseos.objects.get_or_create(usuario=request.user, producto=producto)
-    return redirect('lista_deseos')
+    return redirect("lista_deseos")
+
 
 @login_required
 def eliminar_deseos(request, pk):
     deseo = get_object_or_404(ListaDeseos, pk=pk, usuario=request.user)
     deseo.delete()
-    return redirect('lista_deseos')
+    return redirect("lista_deseos")
+
 
 @login_required
 def mis_pedidos(request):
-    pedidos = Pedido.objects.filter(usuario=request.user).order_by('-fecha')
-    return render(request, 'appnexo/mis_pedidos.html', {
-        'pedidos': pedidos,
-    })
+    pedidos = Pedido.objects.filter(usuario=request.user).order_by("-fecha")
+    return render(
+        request,
+        "appnexo/mis_pedidos.html",
+        {
+            "pedidos": pedidos,
+        },
+    )
+
+@login_required
+def cambiar_contrasena(request):
+    if request.method == 'POST':
+        contrasena_actual = request.POST['contrasena_actual']
+        contrasena_nueva = request.POST['contrasena_nueva']
+        contrasena_confirmar = request.POST['contrasena_confirmar']
+
+        if not request.user.check_password(contrasena_actual):
+            messages.error(request, 'La contraseña actual es incorrecta')
+        elif contrasena_nueva != contrasena_confirmar:
+            messages.error(request, 'Las contraseñas nuevas no coinciden')
+        else:
+            request.user.set_password(contrasena_nueva)
+            request.user.save()
+            messages.success(request, 'Contraseña cambiada correctamente, inicia sesión nuevamente')
+            return redirect('login')
+
+    return render(request, 'appnexo/cambiar_contrasena.html')

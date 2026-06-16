@@ -1,33 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Mi Perfil - Tienda Nexo</title>
+    <title>Cambiar Contraseña - Tienda Nexo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 <body class="bg-light">
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="#">🔒 Tienda Nexo</a>
+            <a class="navbar-brand fw-bold" href="{% url 'inicio' %}">🔒 Tienda Nexo</a>
             <div class="d-flex gap-3 align-items-center">
                 <a href="{% url 'inicio' %}" class="nav-link">Inicio</a>
                 <a href="{% url 'categorias' %}" class="nav-link">Categorías</a>
                 <a href="{% url 'promociones' %}" class="nav-link">Promociones</a>
                 <a href="{% url 'contacto' %}" class="nav-link">Contacto</a>
                 <form method="GET" action="{% url 'categorias' %}" class="d-flex gap-2">
-                    <input type="text" name="busqueda" class="form-control" placeholder="Buscar productos..."
-                        value="{{ request.GET.busqueda }}">
+                    <input type="text" name="busqueda" class="form-control" placeholder="Buscar productos...">
                     <button type="submit" class="btn btn-primary">Buscar</button>
                 </form>
                 {% if user.is_authenticated %}
-                <span class="nav-link">Hola, {{ user.first_name }}</span>
-                <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
+                    <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
                 {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
                 {% endif %}
             </div>
         </div>
@@ -38,13 +35,13 @@
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="#">Mi Cuenta</a></li>
-                <li class="breadcrumb-item active">Perfil</li>
+                <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'perfil' %}">Mi Cuenta</a></li>
+                <li class="breadcrumb-item active">Cambiar Contraseña</li>
             </ol>
         </nav>
 
-        <h2 class="fw-bold mb-4">Mi Perfil</h2>
+        <h2 class="fw-bold mb-4">Cambiar Contraseña</h2>
 
         <div class="row">
 
@@ -53,55 +50,47 @@
                 <div class="card p-3">
                     <h6 class="fw-bold mb-3">Navegación de Perfil</h6>
                     <div class="d-grid gap-2">
-                        <a href="{% url 'perfil' %}" class="btn btn-primary btn-sm text-start">Información Personal</a>
+                        <a href="{% url 'perfil' %}" class="btn btn-outline-secondary btn-sm text-start">Información Personal</a>
                         <a href="{% url 'mis_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Mis Pedidos</a>
                         <a href="{% url 'lista_deseos' %}" class="btn btn-outline-secondary btn-sm text-start">Lista de Deseos</a>
                         <a href="#" class="btn btn-outline-secondary btn-sm text-start">Direcciones de Envío</a>
                         <a href="#" class="btn btn-outline-secondary btn-sm text-start">Métodos de Pago</a>
-                        <a href="{% url 'cambiar_contrasena' %}" class="btn btn-outline-secondary btn-sm text-start">Cambiar Contraseña</a>
+                        <a href="{% url 'cambiar_contrasena' %}" class="btn btn-primary btn-sm text-start">Cambiar Contraseña</a>
                         <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm text-start">Cerrar Sesión</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Informacion personal -->
+            <!-- Formulario -->
             <div class="col-md-9">
                 <div class="card p-4">
-                    <h5 class="fw-bold mb-4">Información Personal</h5>
+                    <h5 class="fw-bold mb-4">Cambiar Contraseña</h5>
 
                     {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert alert-success">{{ message }}</div>
-                    {% endfor %}
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
                     {% endif %}
 
                     <form method="POST">
                         {% csrf_token %}
-                        <div class="mb-3 text-center">
-                            <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center"
-                                style="width:80px; height:80px;">
-                                <span class="text-white fs-4">{{ user.first_name|first }}</span>
-                            </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña Actual</label>
+                            <input type="password" name="contrasena_actual" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Nombre Completo</label>
-                            <input type="text" name="nombre" class="form-control" value="{{ user.first_name }}">
+                            <label class="form-label">Contraseña Nueva</label>
+                            <input type="password" name="contrasena_nueva" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Correo Electrónico</label>
-                            <input type="email" name="email" class="form-control" value="{{ user.email }}">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Número de Teléfono</label>
-                            <input type="text" name="telefono" class="form-control" placeholder="+56 9 XXXXXXXX">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Fecha de Nacimiento</label>
-                            <input type="date" name="fecha_nacimiento" class="form-control">
+                            <label class="form-label">Confirmar Contraseña Nueva</label>
+                            <input type="password" name="contrasena_confirmar" class="form-control" required>
                         </div>
                         <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                            <a href="{% url 'categorias' %}" class="btn btn-outline-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
+                            <a href="{% url 'perfil' %}" class="btn btn-outline-secondary">Cancelar</a>
                         </div>
                     </form>
                 </div>
@@ -112,5 +101,4 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

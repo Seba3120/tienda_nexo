@@ -21,4 +21,5 @@ urlpatterns = [
     path("deseos/agregar/<int:pk>/", views.agregar_deseos, name="agregar_deseos"),
     path("deseos/eliminar/<int:pk>/", views.eliminar_deseos, name="eliminar_deseos"),
     path('mis-pedidos/', views.mis_pedidos, name='mis_pedidos'),
+    path('cambiar-contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
 ]
