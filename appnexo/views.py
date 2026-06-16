@@ -12,9 +12,38 @@ from django.contrib.admin.views.decorators import staff_member_required
 def lista_productos(request):
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()
+
+    # Filtros
+    categoria_id = request.GET.get('categoria')
+    talla = request.GET.get('talla')
+    color = request.GET.get('color')
+    marca = request.GET.get('marca')
+    precio_min = request.GET.get('precio_min')
+    precio_max = request.GET.get('precio_max')
+
+    if categoria_id:
+        productos = productos.filter(categoria__id=categoria_id)
+    if talla:
+        productos = productos.filter(talla=talla)
+    if color:
+        productos = productos.filter(color__icontains=color)
+    if marca:
+        productos = productos.filter(marca__icontains=marca)
+    if precio_min:
+        productos = productos.filter(precio__gte=precio_min)
+    if precio_max:
+        productos = productos.filter(precio__lte=precio_max)
+
+    # Obtener valores unicos para los filtros
+    colores = Producto.objects.values_list('color', flat=True).distinct()
+    marcas = Producto.objects.values_list('marca', flat=True).distinct()
+    tallas = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+
     return render(request, 'appnexo/categorias.html', {
         'productos': productos,
         'categorias': categorias,
+        'colores': colores,
+        'marcas': marcas,
     })
 
 def detalle_producto(request, pk):

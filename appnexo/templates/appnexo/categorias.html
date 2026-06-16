@@ -34,33 +34,55 @@
 
             <!-- Filtros -->
             <div class="col-md-3">
-                <div class="card p-3 mb-3">
-                    <h6 class="fw-bold">Precio</h6>
-                    <input type="range" class="form-range">
-                    <div class="d-flex gap-2">
-                        <input type="number" class="form-control form-control-sm" placeholder="Min">
-                        <input type="number" class="form-control form-control-sm" placeholder="Max">
+                <form method="GET" action="{% url 'categorias' %}">
+                    <div class="card p-3 mb-3">
+                        <h6 class="fw-bold">Precio</h6>
+                        <div class="d-flex gap-2">
+                            <input type="number" name="precio_min" class="form-control form-control-sm"
+                                placeholder="Min" value="{{ request.GET.precio_min }}">
+                            <input type="number" name="precio_max" class="form-control form-control-sm"
+                                placeholder="Max" value="{{ request.GET.precio_max }}">
+                        </div>
                     </div>
-                </div>
-                <div class="card p-3 mb-3">
-                    <h6 class="fw-bold">Categoría</h6>
-                    {% for categoria in categorias %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="categoria">
-                        <label class="form-check-label">{{ categoria.nombre }}</label>
+                    <div class="card p-3 mb-3">
+                        <h6 class="fw-bold">Categoría</h6>
+                        {% for categoria in categorias %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="categoria" value="{{ categoria.id }}">
+                            <label class="form-check-label">{{ categoria.nombre }}</label>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
-                <div class="card p-3 mb-3">
-                    <h6 class="fw-bold">Talla</h6>
-                    {% for talla in 'XS,S,M,L,XL,XXL'|make_list %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox">
-                        <label class="form-check-label">{{ talla }}</label>
+                    <div class="card p-3 mb-3">
+                        <h6 class="fw-bold">Talla</h6>
+                        {% for talla in tallas %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="talla" value="{{ talla }}">
+                            <label class="form-check-label">{{ talla }}</label>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
-                <button class="btn btn-primary w-100">Aplicar Filtros</button>
+                    <div class="card p-3 mb-3">
+                        <h6 class="fw-bold">Color</h6>
+                        {% for color in colores %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="color" value="{{ color }}">
+                            <label class="form-check-label">{{ color }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="card p-3 mb-3">
+                        <h6 class="fw-bold">Marca</h6>
+                        {% for marca in marcas %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="marca" value="{{ marca }}">
+                            <label class="form-check-label">{{ marca }}</label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Aplicar Filtros</button>
+                    <a href="{% url 'categorias' %}" class="btn btn-outline-secondary w-100 mt-2">Limpiar Filtros</a>
+                </form>
             </div>
 
             <!-- Productos -->
