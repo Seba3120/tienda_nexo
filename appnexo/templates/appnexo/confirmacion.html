@@ -41,7 +41,7 @@
                 <span style="font-size:60px;">✅</span>
             </div>
             <h2 class="fw-bold">¡Gracias por tu compra!</h2>
-            <p class="text-muted">Tu número de pedido es: <a href="#" class="text-primary fw-bold">#123456789</a></p>
+            <p class="text-muted">Tu número de pedido es: <a href="{% url 'mis_pedidos' %}" class="text-primary fw-bold">#{{ pedido.pk }}</a></p>
             <p class="text-muted">Hemos enviado una confirmación a tu correo electrónico.</p>
             <div class="d-flex gap-2 justify-content-center mt-3">
                 <a href="#" class="btn btn-outline-secondary">Ver Detalles del Pedido</a>
