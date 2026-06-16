@@ -198,8 +198,13 @@ def pago(request):
         )
 
     if request.method == "POST":
-        request.session["carrito"] = {}
-        return redirect("confirmacion")
+        pedido = Pedido.objects.create(
+            usuario=request.user,
+            total=total,
+            estado='pendiente'
+        )
+        request.session['carrito'] = {}
+        return redirect('confirmacion')
 
     return render(
         request,
@@ -286,3 +291,10 @@ def eliminar_deseos(request, pk):
     deseo = get_object_or_404(ListaDeseos, pk=pk, usuario=request.user)
     deseo.delete()
     return redirect('lista_deseos')
+
+@login_required
+def mis_pedidos(request):
+    pedidos = Pedido.objects.filter(usuario=request.user).order_by('-fecha')
+    return render(request, 'appnexo/mis_pedidos.html', {
+        'pedidos': pedidos,
+    })
