@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from .models import Producto, Categoria
+from .models import Producto, Categoria, Pedido
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+
 
 def lista_productos(request):
     productos = Producto.objects.all()
@@ -136,5 +138,23 @@ def pago(request):
 def confirmacion(request):
     productos = Producto.objects.all()[:4]
     return render(request, 'appnexo/confirmacion.html', {
+        'productos': productos,
+    })
+
+@staff_member_required
+def panel(request):
+    total_ventas = sum(p.total for p in Pedido.objects.filter(estado='completado'))
+    pedidos_pendientes = Pedido.objects.filter(estado='pendiente').count()
+    nuevos_clientes = User.objects.count()
+    productos_sin_stock = Producto.objects.filter(stock=0).count()
+    ultimos_pedidos = Pedido.objects.all().order_by('-fecha')[:5]
+    productos = Producto.objects.all()[:5]
+
+    return render(request, 'appnexo/panel.html', {
+        'total_ventas': total_ventas,
+        'pedidos_pendientes': pedidos_pendientes,
+        'nuevos_clientes': nuevos_clientes,
+        'productos_sin_stock': productos_sin_stock,
+        'ultimos_pedidos': ultimos_pedidos,
         'productos': productos,
     })
