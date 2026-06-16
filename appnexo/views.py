@@ -107,3 +107,34 @@ def contacto(request):
         messages.success(request, 'Mensaje enviado correctamente, te contactaremos pronto.')
         return redirect('contacto')
     return render(request, 'appnexo/contacto.html')
+
+@login_required
+def pago(request):
+    carrito = request.session.get('carrito', {})
+    productos_carrito = []
+    total = 0
+
+    for producto_id, cantidad in carrito.items():
+        producto = get_object_or_404(Producto, pk=producto_id)
+        subtotal = producto.precio * cantidad
+        total += subtotal
+        productos_carrito.append({
+            'producto': producto,
+            'cantidad': cantidad,
+            'subtotal': subtotal,
+        })
+
+    if request.method == 'POST':
+        request.session['carrito'] = {}
+        return redirect('confirmacion')
+
+    return render(request, 'appnexo/pago.html', {
+        'productos_carrito': productos_carrito,
+        'total': total,
+    })
+
+def confirmacion(request):
+    productos = Producto.objects.all()[:4]
+    return render(request, 'appnexo/confirmacion.html', {
+        'productos': productos,
+    })

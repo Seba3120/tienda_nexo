@@ -12,4 +12,6 @@ urlpatterns = [
     path('logout/', views.cerrar_sesion, name='logout'),
     path('perfil/', views.perfil, name='perfil'),
     path('contacto/', views.contacto, name='contacto'),
+    path('pago/', views.pago, name='pago'),
+    path('confirmacion/', views.confirmacion, name='confirmacion'),
 ]
