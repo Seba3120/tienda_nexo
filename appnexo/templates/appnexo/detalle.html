@@ -81,7 +81,7 @@
 
                 <div class="d-flex gap-2">
                     <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-primary">Agregar al Carrito</a>
-                    <button class="btn btn-outline-secondary">Lista de Deseos</button>
+                    <a href="{% url 'agregar_deseos' producto.pk %}" class="btn btn-outline-secondary">Lista de Deseos</a>
                 </div>
             </div>
         </div>

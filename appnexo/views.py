@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Producto, Categoria, Pedido
+from .models import Producto, Categoria, Pedido, ListaDeseos
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -267,3 +267,22 @@ def promociones(request):
             "productos": productos,
         },
     )
+
+@login_required
+def lista_deseos(request):
+    deseos = ListaDeseos.objects.filter(usuario=request.user)
+    return render(request, 'appnexo/lista_deseos.html', {
+        'deseos': deseos,
+    })
+
+@login_required
+def agregar_deseos(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    ListaDeseos.objects.get_or_create(usuario=request.user, producto=producto)
+    return redirect('lista_deseos')
+
+@login_required
+def eliminar_deseos(request, pk):
+    deseo = get_object_or_404(ListaDeseos, pk=pk, usuario=request.user)
+    deseo.delete()
+    return redirect('lista_deseos')

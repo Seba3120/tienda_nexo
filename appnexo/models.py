@@ -45,3 +45,14 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f'Pedido #{self.pk} - {self.usuario.email}'
+    
+class ListaDeseos(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('usuario', 'producto')
+
+    def __str__(self):
+        return f'{self.usuario.email} - {self.producto.nombre}'
