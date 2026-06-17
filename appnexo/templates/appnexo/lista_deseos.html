@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Lista de Deseos - Tienda Nexo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <!-- Navbar -->
@@ -21,10 +23,10 @@
                     <button type="submit" class="btn btn-primary">Buscar</button>
                 </form>
                 {% if user.is_authenticated %}
-                    <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
-                    <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
+                <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
                 {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
                 {% endif %}
             </div>
         </div>
@@ -36,37 +38,70 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'perfil' %}">Mi Cuenta</a></li>
                 <li class="breadcrumb-item active">Lista de Deseos</li>
             </ol>
         </nav>
 
         <h2 class="fw-bold mb-4">Lista de Deseos</h2>
 
-        <div class="row row-cols-2 row-cols-md-4 g-3">
-            {% for deseo in deseos %}
-                <div class="col">
-                    <div class="card h-100">
-                        {% if deseo.producto.imagen %}
-                            <img src="{{ deseo.producto.imagen.url }}" class="card-img-top" style="height:180px; object-fit:cover;">
-                        {% endif %}
-                        <div class="card-body p-2">
-                            <p class="fw-bold small">{{ deseo.producto.nombre }}</p>
-                            <p class="text-primary">${{ deseo.producto.precio }}</p>
-                            <div class="d-flex gap-1">
-                                <a href="{% url 'detalle_producto' deseo.producto.pk %}" class="btn btn-outline-secondary btn-sm">Ver</a>
-                                <a href="{% url 'agregar_carrito' deseo.producto.pk %}" class="btn btn-primary btn-sm">Agregar</a>
-                                <a href="{% url 'eliminar_deseos' deseo.pk %}" class="btn btn-danger btn-sm">🗑️</a>
-                            </div>
-                        </div>
+        <div class="row">
+
+            <!-- Menu lateral -->
+            <div class="col-md-3">
+                <div class="card p-3">
+                    <h6 class="fw-bold mb-3">Navegación de Perfil</h6>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'perfil' %}" class="btn btn-outline-secondary btn-sm text-start">Información
+                            Personal</a>
+                        <a href="{% url 'mis_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Mis
+                            Pedidos</a>
+                        <a href="{% url 'lista_deseos' %}" class="btn btn-primary btn-sm text-start">Lista de Deseos</a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm text-start">Direcciones de Envío</a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm text-start">Métodos de Pago</a>
+                        <a href="{% url 'cambiar_contrasena' %}"
+                            class="btn btn-outline-secondary btn-sm text-start">Cambiar Contraseña</a>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm text-start">Cerrar Sesión</a>
                     </div>
                 </div>
-            {% empty %}
-                <p class="text-muted">No tienes productos en tu lista de deseos.</p>
-            {% endfor %}
-        </div>
+            </div>
 
+            <!-- Productos -->
+            <div class="col-md-9">
+                <div class="card p-4">
+                    <div class="row row-cols-2 row-cols-md-3 g-3">
+                        {% for deseo in deseos %}
+                        <div class="col">
+                            <div class="card h-100">
+                                {% if deseo.producto.imagen %}
+                                <img src="{{ deseo.producto.imagen.url }}" class="card-img-top"
+                                    style="height:180px; object-fit:cover;">
+                                {% endif %}
+                                <div class="card-body p-2">
+                                    <p class="fw-bold small">{{ deseo.producto.nombre }}</p>
+                                    <p class="text-primary">${{ deseo.producto.precio }}</p>
+                                    <div class="d-flex gap-1">
+                                        <a href="{% url 'detalle_producto' deseo.producto.pk %}"
+                                            class="btn btn-outline-secondary btn-sm">Ver</a>
+                                        <a href="{% url 'agregar_carrito' deseo.producto.pk %}"
+                                            class="btn btn-primary btn-sm">Agregar</a>
+                                        <a href="{% url 'eliminar_deseos' deseo.pk %}"
+                                            class="btn btn-danger btn-sm">🗑️</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">No tienes productos en tu lista de deseos.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
