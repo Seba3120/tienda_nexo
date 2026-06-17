@@ -1,0 +1,49 @@
+/* Variables de color */
+:root {
+    --color-primario: #0d6efd;
+    --color-secundario: #6c757d;
+    --color-fondo: #f8f9fa;
+}
+
+/* General */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+/* Cards */
+.card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+}
+
+/* Botones */
+.btn {
+    border-radius: 6px;
+}
+
+.btn-primary {
+    background-color: var(--color-primario);
+}
+
+/* Productos */
+.card-img-top {
+    border-radius: 10px 10px 0 0;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background: none;
+    padding: 0;
+}
