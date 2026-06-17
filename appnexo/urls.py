@@ -20,6 +20,9 @@ urlpatterns = [
     path("deseos/", views.lista_deseos, name="lista_deseos"),
     path("deseos/agregar/<int:pk>/", views.agregar_deseos, name="agregar_deseos"),
     path("deseos/eliminar/<int:pk>/", views.eliminar_deseos, name="eliminar_deseos"),
-    path('mis-pedidos/', views.mis_pedidos, name='mis_pedidos'),
-    path('cambiar-contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
+    path("mis-pedidos/", views.mis_pedidos, name="mis_pedidos"),
+    path("cambiar-contrasena/", views.cambiar_contrasena, name="cambiar_contrasena"),
+    path("direcciones/", views.direcciones_envio, name="direcciones_envio"),
+    path("direcciones/agregar/", views.agregar_direccion, name="agregar_direccion"),
+    path("direcciones/eliminar/<int:pk>/", views.eliminar_direccion, name="eliminar_direccion",),
 ]

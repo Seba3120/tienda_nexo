@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Producto, Categoria, Pedido, ListaDeseos
+from .models import Producto, Categoria, Pedido, ListaDeseos, DireccionEnvio
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -331,3 +331,33 @@ def cambiar_contrasena(request):
             return redirect('login')
 
     return render(request, 'appnexo/cambiar_contrasena.html')
+
+@login_required
+def direcciones_envio(request):
+    direcciones = DireccionEnvio.objects.filter(usuario=request.user)
+    return render(request, 'appnexo/direcciones_envio.html', {
+        'direcciones': direcciones,
+    })
+
+@login_required
+def agregar_direccion(request):
+    if request.method == 'POST':
+        DireccionEnvio.objects.create(
+            usuario=request.user,
+            nombre=request.POST['nombre'],
+            apellido=request.POST['apellido'],
+            calle=request.POST['calle'],
+            ciudad=request.POST['ciudad'],
+            pais=request.POST['pais'],
+            codigo_postal=request.POST['codigo_postal'],
+            telefono=request.POST['telefono'],
+        )
+        messages.success(request, 'Dirección agregada correctamente')
+        return redirect('direcciones_envio')
+    return render(request, 'appnexo/agregar_direccion.html')
+
+@login_required
+def eliminar_direccion(request, pk):
+    direccion = get_object_or_404(DireccionEnvio, pk=pk, usuario=request.user)
+    direccion.delete()
+    return redirect('direcciones_envio')

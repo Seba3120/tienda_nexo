@@ -56,3 +56,17 @@ class ListaDeseos(models.Model):
 
     def __str__(self):
         return f'{self.usuario.email} - {self.producto.nombre}'
+    
+class DireccionEnvio(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    calle = models.CharField(max_length=200)
+    ciudad = models.CharField(max_length=100)
+    pais = models.CharField(max_length=100)
+    codigo_postal = models.CharField(max_length=20)
+    telefono = models.CharField(max_length=20)
+    predeterminada = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.nombre} {self.apellido} - {self.ciudad}'

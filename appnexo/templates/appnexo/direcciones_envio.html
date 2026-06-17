@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Cambiar Contraseña - Tienda Nexo</title>
+    <title>Direcciones de Envío - Tienda Nexo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -37,11 +37,11 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'perfil' %}">Mi Cuenta</a></li>
-                <li class="breadcrumb-item active">Cambiar Contraseña</li>
+                <li class="breadcrumb-item active">Direcciones de Envío</li>
             </ol>
         </nav>
 
-        <h2 class="fw-bold mb-4">Cambiar Contraseña</h2>
+        <h2 class="fw-bold mb-4">Direcciones de Envío</h2>
 
         <div class="row">
 
@@ -53,46 +53,46 @@
                         <a href="{% url 'perfil' %}" class="btn btn-outline-secondary btn-sm text-start">Información Personal</a>
                         <a href="{% url 'mis_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Mis Pedidos</a>
                         <a href="{% url 'lista_deseos' %}" class="btn btn-outline-secondary btn-sm text-start">Lista de Deseos</a>
-                        <a href="{% url 'direcciones_envio' %}" class="btn btn-outline-secondary btn-sm text-start">Direcciones de Envío</a>
+                        <a href="{% url 'direcciones_envio' %}" class="btn btn-primary btn-sm text-start">Direcciones de Envío</a>
                         <a href="#" class="btn btn-outline-secondary btn-sm text-start">Métodos de Pago</a>
-                        <a href="{% url 'cambiar_contrasena' %}" class="btn btn-primary btn-sm text-start">Cambiar Contraseña</a>
+                        <a href="{% url 'cambiar_contrasena' %}" class="btn btn-outline-secondary btn-sm text-start">Cambiar Contraseña</a>
                         <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm text-start">Cerrar Sesión</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Formulario -->
+            <!-- Direcciones -->
             <div class="col-md-9">
                 <div class="card p-4">
-                    <h5 class="fw-bold mb-4">Cambiar Contraseña</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold">Mis Direcciones</h5>
+                        <a href="{% url 'agregar_direccion' %}" class="btn btn-primary btn-sm">+ Agregar Dirección</a>
+                    </div>
 
                     {% if messages %}
                         {% for message in messages %}
-                            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}">
-                                {{ message }}
-                            </div>
+                            <div class="alert alert-success">{{ message }}</div>
                         {% endfor %}
                     {% endif %}
 
-                    <form method="POST">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label class="form-label">Contraseña Actual</label>
-                            <input type="password" name="contrasena_actual" class="form-control" required>
+                    {% if direcciones %}
+                        <div class="row g-3">
+                            {% for direccion in direcciones %}
+                                <div class="col-md-6">
+                                    <div class="card p-3">
+                                        <p class="fw-bold mb-1">{{ direccion.nombre }} {{ direccion.apellido }}</p>
+                                        <p class="small mb-1">{{ direccion.calle }}</p>
+                                        <p class="small mb-1">{{ direccion.ciudad }}, {{ direccion.pais }}</p>
+                                        <p class="small mb-1">CP: {{ direccion.codigo_postal }}</p>
+                                        <p class="small mb-2">Tel: {{ direccion.telefono }}</p>
+                                        <a href="{% url 'eliminar_direccion' direccion.pk %}" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Contraseña Nueva</label>
-                            <input type="password" name="contrasena_nueva" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Confirmar Contraseña Nueva</label>
-                            <input type="password" name="contrasena_confirmar" class="form-control" required>
-                        </div>
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
-                            <a href="{% url 'perfil' %}" class="btn btn-outline-secondary">Cancelar</a>
-                        </div>
-                    </form>
+                    {% else %}
+                        <p class="text-muted">No tienes direcciones registradas.</p>
+                    {% endif %}
                 </div>
             </div>
 
