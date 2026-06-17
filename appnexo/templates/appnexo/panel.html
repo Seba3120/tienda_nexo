@@ -1,159 +1,141 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Panel de Administracion - Tienda Nexo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
+{% extends 'appnexo/base.html' %}
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">🔒 Tienda Nexo — Admin</a>
-            <div class="d-flex gap-3 align-items-center">
-                <a href="{% url 'categorias' %}" class="btn btn-outline-light btn-sm">Ver Tienda</a>
-                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Cerrar Sesión</a>
+{% block titulo %}Panel de Administración - Tienda Nexo{% endblock titulo %}
+
+{% block contenido %}
+<div class="container-fluid mt-4">
+    <div class="row">
+
+        <!-- Menu lateral -->
+        <div class="col-md-2">
+            <div class="card p-3">
+                <h6 class="fw-bold mb-3">Panel de Administración</h6>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'panel' %}" class="btn btn-primary btn-sm text-start">Dashboard</a>
+                    <a href="/admin/appnexo/producto/" class="btn btn-outline-secondary btn-sm text-start">Productos</a>
+                    <a href="/admin/appnexo/pedido/" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
+                    <a href="/admin/auth/user/" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
+                    <a href="/admin/appnexo/categoria/" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Promociones</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Configuración</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Reportes</a>
+                </div>
             </div>
         </div>
-    </nav>
 
-    <div class="container-fluid mt-4">
-        <div class="row">
+        <!-- Contenido principal -->
+        <div class="col-md-10">
 
-            <!-- Menu lateral -->
-            <div class="col-md-2">
-                <div class="card p-3">
-                    <h6 class="fw-bold mb-3">Panel de Administración</h6>
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'panel' %}" class="btn btn-primary btn-sm text-start">Panel</a>
-                        <a href="/admin/appnexo/producto/" class="btn btn-outline-secondary btn-sm text-start">Productos</a>
-                        <a href="/admin/appnexo/pedido/" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
-                        <a href="/admin/auth/user/" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
-                        <a href="/admin/appnexo/categoria/" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm text-start">Promociones</a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm text-start">Configuración</a>
-                        <a href="#" class="btn btn-outline-secondary btn-sm text-start">Reportes</a>
+            <h3 class="fw-bold mb-4">Dashboard General</h3>
+
+            <!-- Tarjetas de estadisticas -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <h6 class="text-muted">Ventas Totales</h6>
+                        <h3 class="fw-bold text-primary">${{ total_ventas }}</h3>
+                        <small class="text-muted">Últimos 30 días</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <h6 class="text-muted">Pedidos Pendientes</h6>
+                        <h3 class="fw-bold text-warning">{{ pedidos_pendientes }}</h3>
+                        <small class="text-muted">Requieren atención</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <h6 class="text-muted">Nuevos Clientes</h6>
+                        <h3 class="fw-bold text-success">{{ nuevos_clientes }}</h3>
+                        <small class="text-muted">Este mes</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 text-center">
+                        <h6 class="text-muted">Productos sin Stock</h6>
+                        <h3 class="fw-bold text-danger">{{ productos_sin_stock }}</h3>
+                        <small class="text-muted">Necesitan reabastecimiento</small>
                     </div>
                 </div>
             </div>
 
-            <!-- Contenido principal -->
-            <div class="col-md-10">
-
-                <h3 class="fw-bold mb-4">Panel General</h3>
-
-                <!-- Tarjetas de estadisticas -->
-                <div class="row g-3 mb-4">
-                    <div class="col-md-3">
-                        <div class="card p-3 text-center">
-                            <h6 class="text-muted">Ventas Totales</h6>
-                            <h3 class="fw-bold text-primary">${{ total_ventas }}</h3>
-                            <small class="text-muted">Últimos 30 días</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card p-3 text-center">
-                            <h6 class="text-muted">Pedidos Pendientes</h6>
-                            <h3 class="fw-bold text-warning">{{ pedidos_pendientes }}</h3>
-                            <small class="text-muted">Requieren atención</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card p-3 text-center">
-                            <h6 class="text-muted">Nuevos Clientes</h6>
-                            <h3 class="fw-bold text-success">{{ nuevos_clientes }}</h3>
-                            <small class="text-muted">Este mes</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card p-3 text-center">
-                            <h6 class="text-muted">Productos sin Stock</h6>
-                            <h3 class="fw-bold text-danger">{{ productos_sin_stock }}</h3>
-                            <small class="text-muted">Necesitan reabastecimiento</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Ultimos pedidos -->
-                <div class="card p-4 mb-4">
-                    <h5 class="fw-bold mb-3">Últimos Pedidos</h5>
-                    <table class="table">
-                        <thead>
+            <!-- Ultimos pedidos -->
+            <div class="card p-4 mb-4">
+                <h5 class="fw-bold mb-3">Últimos Pedidos</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in ultimos_pedidos %}
                             <tr>
-                                <th>ID Pedido</th>
-                                <th>Cliente</th>
-                                <th>Fecha</th>
-                                <th>Total</th>
-                                <th>Estado</th>
+                                <td>#{{ pedido.pk }}</td>
+                                <td>{{ pedido.usuario.email }}</td>
+                                <td>{{ pedido.fecha|date:"d/m/Y" }}</td>
+                                <td>${{ pedido.total }}</td>
+                                <td>
+                                    {% if pedido.estado == 'pendiente' %}
+                                        <span class="badge bg-warning">Pendiente</span>
+                                    {% elif pedido.estado == 'en_proceso' %}
+                                        <span class="badge bg-info">En Proceso</span>
+                                    {% elif pedido.estado == 'completado' %}
+                                        <span class="badge bg-success">Completado</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Cancelado</span>
+                                    {% endif %}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for pedido in ultimos_pedidos %}
-                                <tr>
-                                    <td>#{{ pedido.pk }}</td>
-                                    <td>{{ pedido.usuario.email }}</td>
-                                    <td>{{ pedido.fecha|date:"d/m/Y" }}</td>
-                                    <td>${{ pedido.total }}</td>
-                                    <td>
-                                        {% if pedido.estado == 'pendiente' %}
-                                            <span class="badge bg-warning">Pendiente</span>
-                                        {% elif pedido.estado == 'en_proceso' %}
-                                            <span class="badge bg-info">En Proceso</span>
-                                        {% elif pedido.estado == 'completado' %}
-                                            <span class="badge bg-success">Completado</span>
-                                        {% else %}
-                                            <span class="badge bg-danger">Cancelado</span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted">No hay pedidos aún.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <a href="/admin/appnexo/pedido/" class="btn btn-primary btn-sm">Ver todos los pedidos</a>
-                </div>
-
-                <!-- Productos -->
-                <div class="card p-4">
-                    <h5 class="fw-bold mb-3">Rendimiento de Productos</h5>
-                    <table class="table">
-                        <thead>
+                        {% empty %}
                             <tr>
-                                <th>Producto</th>
-                                <th>Categoría</th>
-                                <th>Precio</th>
-                                <th>Stock</th>
+                                <td colspan="5" class="text-center text-muted">No hay pedidos aún.</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {% for producto in productos %}
-                                <tr>
-                                    <td>{{ producto.nombre }}</td>
-                                    <td>{{ producto.categoria }}</td>
-                                    <td>${{ producto.precio }}</td>
-                                    <td>
-                                        {% if producto.stock == 0 %}
-                                            <span class="badge bg-danger">Sin stock</span>
-                                        {% elif producto.stock < 5 %}
-                                            <span class="badge bg-warning">Stock bajo</span>
-                                        {% else %}
-                                            <span class="badge bg-success">{{ producto.stock }}</span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <a href="/admin/appnexo/pedido/" class="btn btn-primary btn-sm">Ver todos los pedidos</a>
             </div>
+
+            <!-- Productos -->
+            <div class="card p-4">
+                <h5 class="fw-bold mb-3">Rendimiento de Productos</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                            <tr>
+                                <td>{{ producto.nombre }}</td>
+                                <td>{{ producto.categoria }}</td>
+                                <td>${{ producto.precio }}</td>
+                                <td>
+                                    {% if producto.stock == 0 %}
+                                        <span class="badge bg-danger">Sin stock</span>
+                                    {% elif producto.stock < 5 %}
+                                        <span class="badge bg-warning">Stock bajo</span>
+                                    {% else %}
+                                        <span class="badge bg-success">{{ producto.stock }}</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+{% endblock contenido %}

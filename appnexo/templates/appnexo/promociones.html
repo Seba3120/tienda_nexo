@@ -1,112 +1,50 @@
-<!DOCTYPE html>
-<html lang="es">
+{% extends 'appnexo/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Promociones - Tienda Nexo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+{% block titulo %}Promociones - Tienda Nexo{% endblock titulo %}
 
-<body class="bg-light">
+{% block contenido %}
+<div class="container mt-4">
 
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'inicio' %}">🔒 Tienda Nexo</a>
-            <div class="d-flex gap-3 align-items-center">
-                <a href="{% url 'inicio' %}" class="nav-link">Inicio</a>
-                <a href="{% url 'categorias' %}" class="nav-link">Categorías</a>
-                <a href="{% url 'promociones' %}" class="nav-link fw-bold">Promociones</a>
-                <a href="{% url 'contacto' %}" class="nav-link">Contacto</a>
-                <form method="GET" action="{% url 'categorias' %}" class="d-flex gap-2">
-                    <input type="text" name="busqueda" class="form-control" placeholder="Buscar productos..."
-                        value="{{ request.GET.busqueda }}">
-                    <button type="submit" class="btn btn-primary">Buscar</button>
-                </form>
-                {% if user.is_authenticated %}
-                <a href="{% url 'perfil' %}" class="nav-link">Hola, {{ user.first_name }}</a>
-                <a href="{% url 'logout' %}" class="btn btn-outline-secondary btn-sm">Cerrar Sesión</a>
-                {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">Ingresar</a>
-                {% endif %}
-            </div>
-        </div>
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item active">Promociones</li>
+        </ol>
     </nav>
 
-    <div class="container mt-4">
+    <h2 class="fw-bold mb-4">Promociones</h2>
 
-        <!-- Breadcrumb -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
-                <li class="breadcrumb-item active">Promociones</li>
-            </ol>
-        </nav>
+    <!-- Banner promocion -->
+    <div class="card bg-warning text-dark p-4 text-center mb-4">
+        <h4 class="fw-bold">¡Ofertas especiales esta semana!</h4>
+        <p>Descuentos en toda la tienda. Aprovecha antes que se acaben.</p>
+    </div>
 
-        <h2 class="fw-bold mb-4">Promociones</h2>
-
-        <!-- Banner promocion -->
-        <div class="card bg-warning text-dark p-4 text-center mb-4">
-            <h4 class="fw-bold">¡Ofertas especiales esta semana!</h4>
-            <p>Descuentos en toda la tienda. Aprovecha antes que se acaben.</p>
-        </div>
-
-        <!-- Productos en promocion -->
-        <h5 class="fw-bold mb-3">Productos en Oferta</h5>
-        <div class="row row-cols-2 row-cols-md-4 g-3">
-            {% for producto in productos %}
+    <!-- Productos en promocion -->
+    <h5 class="fw-bold mb-3">Productos en Oferta</h5>
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        {% for producto in productos %}
             <div class="col">
                 <div class="card h-100">
                     {% if producto.imagen %}
-                    <img src="{{ producto.imagen.url }}" class="card-img-top" style="height:180px; object-fit:cover;">
+                        <img src="{{ producto.imagen.url }}" class="card-img-top" style="height:180px; object-fit:cover;">
                     {% endif %}
                     <div class="card-body p-2">
                         <span class="badge bg-danger mb-1">Oferta</span>
                         <p class="fw-bold small">{{ producto.nombre }}</p>
                         <p class="text-primary fw-bold">${{ producto.precio }}</p>
                         <div class="d-flex gap-1">
-                            <a href="{% url 'detalle_producto' producto.pk %}"
-                                class="btn btn-outline-secondary btn-sm">Ver</a>
+                            <a href="{% url 'detalle_producto' producto.pk %}" class="btn btn-outline-secondary btn-sm">Ver</a>
                             <a href="{% url 'agregar_carrito' producto.pk %}" class="btn btn-primary btn-sm">Agregar</a>
                         </div>
                     </div>
                 </div>
             </div>
-            {% empty %}
+        {% empty %}
             <p class="text-muted">No hay promociones disponibles por el momento.</p>
-            {% endfor %}
-        </div>
-
+        {% endfor %}
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-secondary text-white py-4 mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h6 class="fw-bold">Tienda Nexo</h6>
-                    <p class="small text-white">Tu tienda de ropa online.</p>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold">Enlaces</h6>
-                    <ul class="list-unstyled small">
-                        <li><a href="{% url 'inicio' %}" class="text-white">Inicio</a></li>
-                        <li><a href="{% url 'categorias' %}" class="text-white">Categorías</a></li>
-                        <li><a href="{% url 'contacto' %}" class="text-white">Contacto</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h6 class="fw-bold">Contacto</h6>
-                    <p class="small text-white">contacto@tiendanexo.cl</p>
-                    <p class="small text-white">+56 9 XXXXXXXX</p>
-                </div>
-            </div>
-            <hr class="border-light">
-            <p class="text-center text-white small">© 2026 Tienda Nexo. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+</div>
+{% endblock contenido %}

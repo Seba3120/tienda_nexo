@@ -70,3 +70,19 @@ class DireccionEnvio(models.Model):
 
     def __str__(self):
         return f'{self.nombre} {self.apellido} - {self.ciudad}'
+    
+    class MetodoPago(models.Model):
+        TIPOS = [('tarjeta', 'Tarjeta de Crédito/Débito'),
+             ('paypal', 'PayPal'),
+             ('transferencia', 'Transferencia Bancaria'),]
+
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=20, choices=[('tarjeta', 'Tarjeta de Crédito/Débito'), 
+                                                    ('paypal', 'PayPal'), 
+                                                    ('transferencia', 'Transferencia Bancaria')])
+    nombre_titular = models.CharField(max_length=100)
+    ultimos_digitos = models.CharField(max_length=4, blank=True)
+    predeterminado = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.tipo} - {self.nombre_titular}'
