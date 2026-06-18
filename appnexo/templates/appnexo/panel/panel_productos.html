@@ -11,11 +11,17 @@
             <div class="card p-3">
                 <h6 class="fw-bold mb-3">Panel de Administración</h6>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Panel General</a>
-                    <a href="{% url 'panel_productos' %}" class="btn btn-primary btn-sm text-start">Productos</a>
+                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Resumen General</a>
+                    <a href="{% url 'panel_productos' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Productos</a>
                     <a href="{% url 'panel_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
-                    <a href="{% url 'panel_clientes' %}" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
-                    <a href="{% url 'panel_categorias' %}" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="{% url 'panel_clientes' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
+                    <a href="{% url 'panel_categorias' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Promociones</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Configuración</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Reportes</a>
                 </div>
             </div>
         </div>
@@ -28,9 +34,9 @@
             </div>
 
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-success">{{ message }}</div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
             {% endif %}
 
             <div class="card p-4">
@@ -49,37 +55,39 @@
                     </thead>
                     <tbody>
                         {% for producto in productos %}
-                            <tr>
-                                <td>
-                                    {% if producto.imagen %}
-                                        <img src="{{ producto.imagen.url }}" width="60" class="rounded">
-                                    {% endif %}
-                                </td>
-                                <td>{{ producto.nombre }}</td>
-                                <td>{{ producto.categoria }}</td>
-                                <td>${{ producto.precio }}</td>
-                                <td>
-                                    {% if producto.stock == 0 %}
-                                        <span class="badge bg-danger">Sin stock</span>
-                                    {% elif producto.stock < 5 %}
-                                        <span class="badge bg-warning">{{ producto.stock }}</span>
+                        <tr>
+                            <td>
+                                {% if producto.imagen %}
+                                <img src="{{ producto.imagen.url }}" width="60" class="rounded">
+                                {% endif %}
+                            </td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.categoria }}</td>
+                            <td>${{ producto.precio }}</td>
+                            <td>
+                                {% if producto.stock == 0 %}
+                                <span class="badge bg-danger">Sin stock</span>
+                                {% elif producto.stock < 5 %} <span class="badge bg-warning">{{ producto.stock }}</span>
                                     {% else %}
-                                        <span class="badge bg-success">{{ producto.stock }}</span>
+                                    <span class="badge bg-success">{{ producto.stock }}</span>
                                     {% endif %}
-                                </td>
-                                <td>{{ producto.talla }}</td>
-                                <td>{{ producto.color }}</td>
-                                <td>
-                                    <div class="d-flex gap-1">
-                                        <a href="{% url 'panel_editar_producto' producto.pk %}" class="btn btn-warning btn-sm">Editar</a>
-                                        <a href="{% url 'panel_eliminar_producto' producto.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</a>
-                                    </div>
-                                </td>
-                            </tr>
+                            </td>
+                            <td>{{ producto.talla }}</td>
+                            <td>{{ producto.color }}</td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <a href="{% url 'panel_editar_producto' producto.pk %}"
+                                        class="btn btn-warning btn-sm">Editar</a>
+                                    <a href="{% url 'panel_eliminar_producto' producto.pk %}"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('¿Estás seguro de eliminar este producto?')">Eliminar</a>
+                                </div>
+                            </td>
+                        </tr>
                         {% empty %}
-                            <tr>
-                                <td colspan="8" class="text-center text-muted">No hay productos registrados.</td>
-                            </tr>
+                        <tr>
+                            <td colspan="8" class="text-center text-muted">No hay productos registrados.</td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>

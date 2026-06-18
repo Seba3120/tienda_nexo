@@ -11,11 +11,17 @@
             <div class="card p-3">
                 <h6 class="fw-bold mb-3">Panel de Administración</h6>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Panel General</a>
-                    <a href="{% url 'panel_productos' %}" class="btn btn-outline-secondary btn-sm text-start">Productos</a>
+                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Resumen General</a>
+                    <a href="{% url 'panel_productos' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Productos</a>
                     <a href="{% url 'panel_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
-                    <a href="{% url 'panel_clientes' %}" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
-                    <a href="{% url 'panel_categorias' %}" class="btn btn-primary btn-sm text-start">Categorías</a>
+                    <a href="{% url 'panel_clientes' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
+                    <a href="{% url 'panel_categorias' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Promociones</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Configuración</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Reportes</a>
                 </div>
             </div>
         </div>
@@ -25,9 +31,9 @@
             <h3 class="fw-bold mb-4">Categorías</h3>
 
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-success">{{ message }}</div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
             {% endif %}
 
             <div class="row">
@@ -60,18 +66,20 @@
                             </thead>
                             <tbody>
                                 {% for categoria in categorias %}
-                                    <tr>
-                                        <td>#{{ categoria.pk }}</td>
-                                        <td>{{ categoria.nombre }}</td>
-                                        <td>{{ categoria.producto_set.count }}</td>
-                                        <td>
-                                            <a href="{% url 'panel_eliminar_categoria' categoria.pk %}" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar esta categoría?')">Eliminar</a>
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td>#{{ categoria.pk }}</td>
+                                    <td>{{ categoria.nombre }}</td>
+                                    <td>{{ categoria.producto_set.count }}</td>
+                                    <td>
+                                        <a href="{% url 'panel_eliminar_categoria' categoria.pk %}"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('¿Estás seguro de eliminar esta categoría?')">Eliminar</a>
+                                    </td>
+                                </tr>
                                 {% empty %}
-                                    <tr>
-                                        <td colspan="4" class="text-center text-muted">No hay categorías registradas.</td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No hay categorías registradas.</td>
+                                </tr>
                                 {% endfor %}
                             </tbody>
                         </table>

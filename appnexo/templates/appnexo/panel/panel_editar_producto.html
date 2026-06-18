@@ -11,11 +11,17 @@
             <div class="card p-3">
                 <h6 class="fw-bold mb-3">Panel de Administración</h6>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Panel General</a>
-                    <a href="{% url 'panel_productos' %}" class="btn btn-primary btn-sm text-start">Productos</a>
+                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Resumen General</a>
+                    <a href="{% url 'panel_productos' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Productos</a>
                     <a href="{% url 'panel_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
-                    <a href="{% url 'panel_clientes' %}" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
-                    <a href="{% url 'panel_categorias' %}" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="{% url 'panel_clientes' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
+                    <a href="{% url 'panel_categorias' %}"
+                        class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Promociones</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Configuración</a>
+                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">Reportes</a>
                 </div>
             </div>
         </div>
@@ -25,9 +31,9 @@
             <h3 class="fw-bold mb-4">Editar Producto</h3>
 
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-success">{{ message }}</div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
             {% endif %}
 
             <div class="card p-4">
@@ -36,23 +42,27 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" value="{{ producto.nombre }}" required>
+                            <input type="text" name="nombre" class="form-control" value="{{ producto.nombre }}"
+                                required>
                         </div>
                         <div class="col">
                             <label class="form-label">Precio</label>
-                            <input type="number" name="precio" class="form-control" step="0.01" value="{{ producto.precio }}" required>
+                            <input type="number" name="precio" class="form-control" step="0.01"
+                                value="{{ producto.precio }}" required>
                         </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Descripción</label>
-                        <textarea name="descripcion" class="form-control" rows="3" required>{{ producto.descripcion }}</textarea>
+                        <textarea name="descripcion" class="form-control" rows="3"
+                            required>{{ producto.descripcion }}</textarea>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <label class="form-label">Categoría</label>
                             <select name="categoria" class="form-select" required>
                                 {% for categoria in categorias %}
-                                    <option value="{{ categoria.pk }}" {% if categoria.pk == producto.categoria.pk %}selected{% endif %}>{{ categoria.nombre }}</option>
+                                <option value="{{ categoria.pk }}" {% if categoria.pk==producto.categoria.pk
+                                    %}selected{% endif %}>{{ categoria.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -61,12 +71,12 @@
                             <select name="talla" class="form-select" required>
                                 {% for talla in 'XS,S,M,L,XL,XXL'|make_list %}
                                 {% endfor %}
-                                <option value="XS" {% if producto.talla == 'XS' %}selected{% endif %}>XS</option>
-                                <option value="S" {% if producto.talla == 'S' %}selected{% endif %}>S</option>
-                                <option value="M" {% if producto.talla == 'M' %}selected{% endif %}>M</option>
-                                <option value="L" {% if producto.talla == 'L' %}selected{% endif %}>L</option>
-                                <option value="XL" {% if producto.talla == 'XL' %}selected{% endif %}>XL</option>
-                                <option value="XXL" {% if producto.talla == 'XXL' %}selected{% endif %}>XXL</option>
+                                <option value="XS" {% if producto.talla=='XS' %}selected{% endif %}>XS</option>
+                                <option value="S" {% if producto.talla=='S' %}selected{% endif %}>S</option>
+                                <option value="M" {% if producto.talla=='M' %}selected{% endif %}>M</option>
+                                <option value="L" {% if producto.talla=='L' %}selected{% endif %}>L</option>
+                                <option value="XL" {% if producto.talla=='XL' %}selected{% endif %}>XL</option>
+                                <option value="XXL" {% if producto.talla=='XXL' %}selected{% endif %}>XXL</option>
                             </select>
                         </div>
                     </div>
@@ -83,12 +93,13 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label class="form-label">Stock</label>
-                            <input type="number" name="stock" class="form-control" value="{{ producto.stock }}" required>
+                            <input type="number" name="stock" class="form-control" value="{{ producto.stock }}"
+                                required>
                         </div>
                         <div class="col">
                             <label class="form-label">Imagen actual</label>
                             {% if producto.imagen %}
-                                <img src="{{ producto.imagen.url }}" width="80" class="rounded d-block mb-2">
+                            <img src="{{ producto.imagen.url }}" width="80" class="rounded d-block mb-2">
                             {% endif %}
                             <input type="file" name="imagen" class="form-control">
                         </div>
