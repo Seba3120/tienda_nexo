@@ -86,3 +86,15 @@ class MetodoPago(models.Model):
 
     def __str__(self):
         return f'{self.tipo} - {self.nombre_titular}'
+    
+class DetallePedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='detalles')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    cantidad = models.IntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'{self.pedido.pk} - {self.producto.nombre}'
+
+    def subtotal(self):
+        return self.precio * self.cantidad

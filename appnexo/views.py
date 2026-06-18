@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Producto, Categoria, Pedido, ListaDeseos, DireccionEnvio, MetodoPago
+from .models import Producto, Categoria, Pedido, ListaDeseos, DireccionEnvio, MetodoPago, DetallePedido
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -189,10 +189,22 @@ def pago(request):
 
     if request.method == "POST":
         pedido = Pedido.objects.create(
-            usuario=request.user, total=total, estado="pendiente"
+            usuario=request.user,
+            total=total,
+            estado='pendiente'
         )
-        request.session["carrito"] = {}
-        return redirect("confirmacion")
+        for producto_id, cantidad in carrito.items():
+            producto = get_object_or_404(Producto, pk=producto_id)
+            DetallePedido.objects.create(
+                pedido=pedido,
+                producto=producto,
+                cantidad=cantidad,
+                precio=producto.precio
+            )
+            producto.stock -= cantidad
+            producto.save()
+        request.session['carrito'] = {}
+        return redirect('confirmacion')
 
     return render(
         request,
