@@ -11,11 +11,11 @@
             <div class="card p-3">
                 <h6 class="fw-bold mb-3">Panel de Administración</h6>
                 <div class="d-grid gap-2">
-                    <a href="{% url 'panel' %}" class="btn btn-primary btn-sm text-start">Dashboard</a>
-                    <a href="/admin/appnexo/producto/" class="btn btn-outline-secondary btn-sm text-start">Productos</a>
-                    <a href="/admin/appnexo/pedido/" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
-                    <a href="/admin/auth/user/" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
-                    <a href="/admin/appnexo/categoria/" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                    <a href="{% url 'panel' %}" class="btn btn-primary btn-sm text-start">Panel General</a>
+                    <a href="{% url 'panel_productos' %}" class="btn btn-outline-secondary btn-sm text-start">Productos</a>
+                    <a href="{% url 'panel_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
+                    <a href="{% url 'panel_clientes' %}" class="btn btn-outline-secondary btn-sm text-start">Clientes</a>
+                    <a href="{% url 'panel_categorias' %}" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
                     <a href="#" class="btn btn-outline-secondary btn-sm text-start">Promociones</a>
                     <a href="#" class="btn btn-outline-secondary btn-sm text-start">Configuración</a>
                     <a href="#" class="btn btn-outline-secondary btn-sm text-start">Reportes</a>
@@ -26,7 +26,7 @@
         <!-- Contenido principal -->
         <div class="col-md-10">
 
-            <h3 class="fw-bold mb-4">Dashboard General</h3>
+            <h3 class="fw-bold mb-4">Panel General</h3>
 
             <!-- Tarjetas de estadisticas -->
             <div class="row g-3 mb-4">
@@ -99,7 +99,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                <a href="/admin/appnexo/pedido/" class="btn btn-primary btn-sm">Ver todos los pedidos</a>
+                <a href="{% url 'panel_pedidos' %}" class="btn btn-primary btn-sm">Ver todos los pedidos</a>
             </div>
 
             <!-- Productos -->

@@ -62,7 +62,6 @@ def lista_productos(request):
         },
     )
 
-
 def detalle_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     productos_relacionados = Producto.objects.exclude(pk=pk)[:4]
@@ -74,7 +73,6 @@ def detalle_producto(request, pk):
             "productos_relacionados": productos_relacionados,
         },
     )
-
 
 def ver_carrito(request):
     carrito = request.session.get("carrito", {})
@@ -102,13 +100,11 @@ def ver_carrito(request):
         },
     )
 
-
 def agregar_carrito(request, pk):
     carrito = request.session.get("carrito", {})
     carrito[str(pk)] = carrito.get(str(pk), 0) + 1
     request.session["carrito"] = carrito
     return redirect("ver_carrito")
-
 
 def eliminar_carrito(request, pk):
     carrito = request.session.get("carrito", {})
@@ -116,7 +112,6 @@ def eliminar_carrito(request, pk):
         del carrito[str(pk)]
         request.session["carrito"] = carrito
     return redirect("ver_carrito")
-
 
 def iniciar_sesion(request):
     if request.method == "POST":
@@ -129,7 +124,6 @@ def iniciar_sesion(request):
         else:
             messages.error(request, "Usuario o contraseña incorrectos")
     return render(request, "appnexo/login.html")
-
 
 def registrarse(request):
     if request.method == "POST":
@@ -146,11 +140,9 @@ def registrarse(request):
             return redirect("categorias")
     return render(request, "appnexo/login.html")
 
-
 def cerrar_sesion(request):
     logout(request)
     return redirect("categorias")
-
 
 @login_required
 def perfil(request):
@@ -165,7 +157,6 @@ def perfil(request):
         return redirect("perfil")
     return render(request, "appnexo/perfil.html")
 
-
 def contacto(request):
     if request.method == "POST":
         nombre = request.POST["nombre"]
@@ -177,7 +168,6 @@ def contacto(request):
         )
         return redirect("contacto")
     return render(request, "appnexo/contacto.html")
-
 
 @login_required
 def pago(request):
@@ -213,7 +203,6 @@ def pago(request):
         },
     )
 
-
 def confirmacion(request):
     ultimo_pedido = (
         Pedido.objects.filter(usuario=request.user).order_by("-fecha").first()
@@ -227,7 +216,6 @@ def confirmacion(request):
             "pedido": ultimo_pedido,
         },
     )
-
 
 @staff_member_required
 def panel(request):
@@ -251,7 +239,6 @@ def panel(request):
         },
     )
 
-
 def inicio(request):
     productos_destacados = Producto.objects.all()[:8]
     categorias = Categoria.objects.all()
@@ -264,7 +251,6 @@ def inicio(request):
         },
     )
 
-
 def promociones(request):
     productos = Producto.objects.all()
     return render(
@@ -274,7 +260,6 @@ def promociones(request):
             "productos": productos,
         },
     )
-
 
 @login_required
 def lista_deseos(request):
@@ -287,20 +272,17 @@ def lista_deseos(request):
         },
     )
 
-
 @login_required
 def agregar_deseos(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     ListaDeseos.objects.get_or_create(usuario=request.user, producto=producto)
     return redirect("lista_deseos")
 
-
 @login_required
 def eliminar_deseos(request, pk):
     deseo = get_object_or_404(ListaDeseos, pk=pk, usuario=request.user)
     deseo.delete()
     return redirect("lista_deseos")
-
 
 @login_required
 def mis_pedidos(request):
@@ -312,7 +294,6 @@ def mis_pedidos(request):
             "pedidos": pedidos,
         },
     )
-
 
 @login_required
 def cambiar_contrasena(request):
@@ -335,7 +316,6 @@ def cambiar_contrasena(request):
 
     return render(request, "appnexo/cambiar_contrasena.html")
 
-
 @login_required
 def direcciones_envio(request):
     direcciones = DireccionEnvio.objects.filter(usuario=request.user)
@@ -346,7 +326,6 @@ def direcciones_envio(request):
             "direcciones": direcciones,
         },
     )
-
 
 @login_required
 def agregar_direccion(request):
@@ -384,7 +363,6 @@ def metodos_pago(request):
         },
     )
 
-
 @login_required
 def agregar_metodo_pago(request):
     if request.method == "POST":
@@ -404,3 +382,102 @@ def eliminar_metodo_pago(request, pk):
     metodo = get_object_or_404(MetodoPago, pk=pk, usuario=request.user)
     metodo.delete()
     return redirect("metodos_pago")
+
+@staff_member_required
+def panel_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'appnexo/panel/panel_productos.html', {
+        'productos': productos,
+    })
+
+@staff_member_required
+def panel_crear_producto(request):
+    categorias = Categoria.objects.all()
+    if request.method == 'POST':
+        Producto.objects.create(
+            nombre=request.POST['nombre'],
+            descripcion=request.POST['descripcion'],
+            precio=request.POST['precio'],
+            imagen=request.FILES.get('imagen'),
+            talla=request.POST['talla'],
+            color=request.POST['color'],
+            categoria=Categoria.objects.get(pk=request.POST['categoria']),
+            marca=request.POST['marca'],
+            stock=request.POST['stock'],
+        )
+        messages.success(request, 'Producto creado correctamente')
+        return redirect('panel_productos')
+    return render(request, 'appnexo/panel/panel_crear_producto.html', {
+        'categorias': categorias,
+    })
+
+@staff_member_required
+def panel_editar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    categorias = Categoria.objects.all()
+    if request.method == 'POST':
+        producto.nombre = request.POST['nombre']
+        producto.descripcion = request.POST['descripcion']
+        producto.precio = request.POST['precio']
+        producto.talla = request.POST['talla']
+        producto.color = request.POST['color']
+        producto.categoria = Categoria.objects.get(pk=request.POST['categoria'])
+        producto.marca = request.POST['marca']
+        producto.stock = request.POST['stock']
+        if request.FILES.get('imagen'):
+            producto.imagen = request.FILES['imagen']
+        producto.save()
+        messages.success(request, 'Producto actualizado correctamente')
+        return redirect('panel_productos')
+    return render(request, 'appnexo/panel/panel_editar_producto.html', {
+        'producto': producto,
+        'categorias': categorias,
+    })
+
+@staff_member_required
+def panel_eliminar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    producto.delete()
+    messages.success(request, 'Producto eliminado correctamente')
+    return redirect('panel_productos')
+
+@staff_member_required
+def panel_pedidos(request):
+    pedidos = Pedido.objects.all().order_by('-fecha')
+    return render(request, 'appnexo/panel/panel_pedidos.html', {
+        'pedidos': pedidos,
+    })
+
+@staff_member_required
+def panel_cambiar_estado_pedido(request, pk):
+    pedido = get_object_or_404(Pedido, pk=pk)
+    if request.method == 'POST':
+        pedido.estado = request.POST['estado']
+        pedido.save()
+        messages.success(request, 'Estado del pedido actualizado correctamente')
+    return redirect('panel_pedidos')
+
+@staff_member_required
+def panel_clientes(request):
+    clientes = User.objects.filter(is_staff=False)
+    return render(request, 'appnexo/panel/panel_clientes.html', {
+        'clientes': clientes,
+    })
+
+@staff_member_required
+def panel_categorias(request):
+    categorias = Categoria.objects.all()
+    if request.method == 'POST':
+        Categoria.objects.create(nombre=request.POST['nombre'])
+        messages.success(request, 'Categoría creada correctamente')
+        return redirect('panel_categorias')
+    return render(request, 'appnexo/panel/panel_categorias.html', {
+        'categorias': categorias,
+    })
+
+@staff_member_required
+def panel_eliminar_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    categoria.delete()
+    messages.success(request, 'Categoría eliminada correctamente')
+    return redirect('panel_categorias')

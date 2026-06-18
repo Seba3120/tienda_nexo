@@ -28,4 +28,13 @@ urlpatterns = [
     path("metodos-pago/", views.metodos_pago, name="metodos_pago"),
     path("metodos-pago/agregar/", views.agregar_metodo_pago, name="agregar_metodo_pago"),
     path("metodos-pago/eliminar/<int:pk>/", views.eliminar_metodo_pago, name="eliminar_metodo_pago",),
+    path("panel/productos/", views.panel_productos, name="panel_productos"),
+    path("panel/productos/crear/", views.panel_crear_producto, name="panel_crear_producto",),
+    path("panel/productos/editar/<int:pk>/", views.panel_editar_producto, name="panel_editar_producto",),
+    path("panel/productos/eliminar/<int:pk>/", views.panel_eliminar_producto, name="panel_eliminar_producto",),
+    path('panel/pedidos/', views.panel_pedidos, name='panel_pedidos'),
+    path('panel/pedidos/estado/<int:pk>/', views.panel_cambiar_estado_pedido, name='panel_cambiar_estado_pedido'),
+    path('panel/clientes/', views.panel_clientes, name='panel_clientes'),
+    path('panel/categorias/', views.panel_categorias, name='panel_categorias'),
+    path('panel/categorias/eliminar/<int:pk>/', views.panel_eliminar_categoria, name='panel_eliminar_categoria'),
 ]

@@ -1,0 +1,58 @@
+{% extends 'appnexo/base.html' %}
+
+{% block titulo %}Clientes - Panel Admin{% endblock titulo %}
+
+{% block contenido %}
+<div class="container-fluid mt-4">
+    <div class="row">
+
+        <!-- Menu lateral -->
+        <div class="col-md-2">
+            <div class="card p-3">
+                <h6 class="fw-bold mb-3">Panel de Administración</h6>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'panel' %}" class="btn btn-outline-secondary btn-sm text-start">Panel General</a>
+                    <a href="{% url 'panel_productos' %}" class="btn btn-outline-secondary btn-sm text-start">Productos</a>
+                    <a href="{% url 'panel_pedidos' %}" class="btn btn-outline-secondary btn-sm text-start">Pedidos</a>
+                    <a href="{% url 'panel_clientes' %}" class="btn btn-primary btn-sm text-start">Clientes</a>
+                    <a href="{% url 'panel_categorias' %}" class="btn btn-outline-secondary btn-sm text-start">Categorías</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="col-md-10">
+            <h3 class="fw-bold mb-4">Clientes</h3>
+
+            <div class="card p-4">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Fecha de Registro</th>
+                            <th>Pedidos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in clientes %}
+                            <tr>
+                                <td>#{{ cliente.pk }}</td>
+                                <td>{{ cliente.first_name }} {{ cliente.last_name }}</td>
+                                <td>{{ cliente.email }}</td>
+                                <td>{{ cliente.date_joined|date:"d/m/Y" }}</td>
+                                <td>{{ cliente.pedido_set.count }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">No hay clientes registrados.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}
