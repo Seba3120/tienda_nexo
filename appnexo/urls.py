@@ -25,4 +25,7 @@ urlpatterns = [
     path("direcciones/", views.direcciones_envio, name="direcciones_envio"),
     path("direcciones/agregar/", views.agregar_direccion, name="agregar_direccion"),
     path("direcciones/eliminar/<int:pk>/", views.eliminar_direccion, name="eliminar_direccion",),
+    path("metodos-pago/", views.metodos_pago, name="metodos_pago"),
+    path("metodos-pago/agregar/", views.agregar_metodo_pago, name="agregar_metodo_pago"),
+    path("metodos-pago/eliminar/<int:pk>/", views.eliminar_metodo_pago, name="eliminar_metodo_pago",),
 ]

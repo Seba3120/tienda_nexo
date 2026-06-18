@@ -71,10 +71,10 @@ class DireccionEnvio(models.Model):
     def __str__(self):
         return f'{self.nombre} {self.apellido} - {self.ciudad}'
     
-    class MetodoPago(models.Model):
-        TIPOS = [('tarjeta', 'Tarjeta de Crédito/Débito'),
-             ('paypal', 'PayPal'),
-             ('transferencia', 'Transferencia Bancaria'),]
+class MetodoPago(models.Model):
+    TIPOS = [('tarjeta', 'Tarjeta de Crédito/Débito'),
+            ('paypal', 'PayPal'),
+            ('transferencia', 'Transferencia Bancaria'),]
 
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     tipo = models.CharField(max_length=20, choices=[('tarjeta', 'Tarjeta de Crédito/Débito'), 

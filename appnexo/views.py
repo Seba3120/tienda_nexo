@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Producto, Categoria, Pedido, ListaDeseos, DireccionEnvio
+from .models import Producto, Categoria, Pedido, ListaDeseos, DireccionEnvio, MetodoPago
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import authenticate, login, logout
@@ -313,51 +313,94 @@ def mis_pedidos(request):
         },
     )
 
+
 @login_required
 def cambiar_contrasena(request):
-    if request.method == 'POST':
-        contrasena_actual = request.POST['contrasena_actual']
-        contrasena_nueva = request.POST['contrasena_nueva']
-        contrasena_confirmar = request.POST['contrasena_confirmar']
+    if request.method == "POST":
+        contrasena_actual = request.POST["contrasena_actual"]
+        contrasena_nueva = request.POST["contrasena_nueva"]
+        contrasena_confirmar = request.POST["contrasena_confirmar"]
 
         if not request.user.check_password(contrasena_actual):
-            messages.error(request, 'La contraseña actual es incorrecta')
+            messages.error(request, "La contraseña actual es incorrecta")
         elif contrasena_nueva != contrasena_confirmar:
-            messages.error(request, 'Las contraseñas nuevas no coinciden')
+            messages.error(request, "Las contraseñas nuevas no coinciden")
         else:
             request.user.set_password(contrasena_nueva)
             request.user.save()
-            messages.success(request, 'Contraseña cambiada correctamente, inicia sesión nuevamente')
-            return redirect('login')
+            messages.success(
+                request, "Contraseña cambiada correctamente, inicia sesión nuevamente"
+            )
+            return redirect("login")
 
-    return render(request, 'appnexo/cambiar_contrasena.html')
+    return render(request, "appnexo/cambiar_contrasena.html")
+
 
 @login_required
 def direcciones_envio(request):
     direcciones = DireccionEnvio.objects.filter(usuario=request.user)
-    return render(request, 'appnexo/direcciones_envio.html', {
-        'direcciones': direcciones,
-    })
+    return render(
+        request,
+        "appnexo/direcciones_envio.html",
+        {
+            "direcciones": direcciones,
+        },
+    )
+
 
 @login_required
 def agregar_direccion(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         DireccionEnvio.objects.create(
             usuario=request.user,
-            nombre=request.POST['nombre'],
-            apellido=request.POST['apellido'],
-            calle=request.POST['calle'],
-            ciudad=request.POST['ciudad'],
-            pais=request.POST['pais'],
-            codigo_postal=request.POST['codigo_postal'],
-            telefono=request.POST['telefono'],
+            nombre=request.POST["nombre"],
+            apellido=request.POST["apellido"],
+            calle=request.POST["calle"],
+            ciudad=request.POST["ciudad"],
+            pais=request.POST["pais"],
+            codigo_postal=request.POST["codigo_postal"],
+            telefono=request.POST["telefono"],
         )
-        messages.success(request, 'Dirección agregada correctamente')
-        return redirect('direcciones_envio')
-    return render(request, 'appnexo/agregar_direccion.html')
+        messages.success(request, "Dirección agregada correctamente")
+        return redirect("direcciones_envio")
+    return render(request, "appnexo/agregar_direccion.html")
+
 
 @login_required
 def eliminar_direccion(request, pk):
     direccion = get_object_or_404(DireccionEnvio, pk=pk, usuario=request.user)
     direccion.delete()
-    return redirect('direcciones_envio')
+    return redirect("direcciones_envio")
+
+
+@login_required
+def metodos_pago(request):
+    metodos = MetodoPago.objects.filter(usuario=request.user)
+    return render(
+        request,
+        "appnexo/metodos_pago.html",
+        {
+            "metodos": metodos,
+        },
+    )
+
+
+@login_required
+def agregar_metodo_pago(request):
+    if request.method == "POST":
+        MetodoPago.objects.create(
+            usuario=request.user,
+            tipo=request.POST["tipo"],
+            nombre_titular=request.POST["nombre_titular"],
+            ultimos_digitos=request.POST.get("ultimos_digitos", ""),
+        )
+        messages.success(request, "Método de pago agregado correctamente")
+        return redirect("metodos_pago")
+    return render(request, "appnexo/agregar_metodo_pago.html")
+
+
+@login_required
+def eliminar_metodo_pago(request, pk):
+    metodo = get_object_or_404(MetodoPago, pk=pk, usuario=request.user)
+    metodo.delete()
+    return redirect("metodos_pago")
